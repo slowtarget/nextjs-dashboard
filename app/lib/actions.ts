@@ -80,13 +80,14 @@ export async function updateInvoice(prevState: State, formData: FormData) {
   // If form validation fails, return errors early. Otherwise, continue.
   if (!validatedFields.success) {
     return {
+      ...prevState,
       errors: validatedFields.error.flatten().fieldErrors,
       message: 'Missing Fields. Failed to Create Invoice.',
     };
   }
 
   const { customerId, amount, status } = validatedFields.data;
-
+  console.log('updateInvoice', { prevState, customerId, amount, status });
   const amountInCents = amount * 100;
 
   try {
@@ -97,6 +98,8 @@ export async function updateInvoice(prevState: State, formData: FormData) {
     `;
   } catch (e) {
     return {
+      ...prevState,
+      errors: {},
       message: 'Database Error: Failed to Update Invoice.',
     };
   }

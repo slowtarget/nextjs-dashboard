@@ -8,6 +8,7 @@ import { updateInvoice } from '@/app/lib/actions';
 import { useFormState } from 'react-dom';
 import { CustomerSelect } from '@/app/ui/invoices/customer-select';
 import { InvoiceAmount } from '@/app/ui/invoices/invoice-amount';
+import { ErrorLine } from '@/app/ui/invoices/error-line';
 
 export default function EditInvoiceForm({
   invoice,
@@ -19,7 +20,6 @@ export default function EditInvoiceForm({
   const initialState = { message: null, errors: {}, id: invoice?.id };
   const [state, dispatch] = useFormState(updateInvoice, initialState);
   console.log('edit-form', state);
-  const { amount } = invoice;
   return (
     <form action={dispatch}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
@@ -31,7 +31,10 @@ export default function EditInvoiceForm({
         />
 
         {/* Invoice Amount */}
-        <InvoiceAmount defaultValue={amount} />
+        <InvoiceAmount
+          defaultValue={invoice.amount}
+          errors={state.errors?.amount}
+        />
 
         {/* Invoice Status */}
         <fieldset>
@@ -75,6 +78,9 @@ export default function EditInvoiceForm({
             </div>
           </div>
         </fieldset>
+        <div id="form-error" aria-live="polite" aria-atomic="true">
+          {state.message && <ErrorLine error={state.message} />}
+        </div>
       </div>
       <div className="mt-6 flex justify-end gap-4">
         <Link
