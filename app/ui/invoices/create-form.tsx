@@ -11,6 +11,8 @@ import { Button } from '@/app/ui/button';
 import { createInvoice, State } from '@/app/lib/actions';
 import { useFormState } from 'react-dom';
 import { useEffect } from 'react';
+import { ErrorLine } from '@/app/ui/invoices/error-line';
+import { Errors } from '@/app/ui/invoices/errors';
 
 export default function Form({
   customers,
@@ -26,6 +28,10 @@ export default function Form({
       console.log('state', state);
     }
   }, [state]);
+  const options = [
+    { value: 'pending', label: 'Pending', icon: ClockIcon },
+    { value: 'paid', label: 'Paid', icon: CheckIcon },
+  ];
   return (
     <form action={dispatch}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
@@ -53,14 +59,7 @@ export default function Form({
             </select>
             <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
           </div>
-          <div id="customer-error" aria-live="polite" aria-atomic="true">
-            {state.errors?.customerId &&
-              state.errors.customerId.map((error: string) => (
-                <p className="mt-2 text-sm text-red-500" key={error}>
-                  {error}
-                </p>
-              ))}
-          </div>
+          <Errors id={'customer-error'} errors={state.errors?.customerId} />
         </div>
 
         {/* Invoice Amount */}
@@ -77,19 +76,12 @@ export default function Form({
                 step="0.01"
                 placeholder="Enter USD amount"
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                aria-describedby="customer-error"
+                aria-describedby="amount-error"
               />
               <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
             </div>
           </div>
-          <div id="amount-error" aria-live="polite" aria-atomic="true">
-            {state.errors?.amount &&
-              state.errors.amount.map((error: string) => (
-                <p className="mt-2 text-sm text-red-500" key={error}>
-                  {error}
-                </p>
-              ))}
-          </div>
+          <Errors id={'amount-error'} errors={state.errors?.amount} />
         </div>
 
         {/* Invoice Status */}
@@ -99,53 +91,34 @@ export default function Form({
           </legend>
           <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
             <div className="flex gap-4">
-              <div className="flex items-center">
-                <input
-                  id="pending"
-                  name="status"
-                  type="radio"
-                  value="pending"
-                  className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-                  aria-describedby="status-error"
-                />
-                <label
-                  htmlFor="pending"
-                  className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600"
-                >
-                  Pending <ClockIcon className="h-4 w-4" />
-                </label>
-              </div>
-              <div className="flex items-center">
-                <input
-                  id="paid"
-                  name="status"
-                  type="radio"
-                  value="paid"
-                  className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-                />
-                <label
-                  htmlFor="paid"
-                  className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-green-500 px-3 py-1.5 text-xs font-medium text-white"
-                >
-                  Paid <CheckIcon className="h-4 w-4" />
-                </label>
-              </div>
+              {/* Radio buttons */}
+              {options.map((option) => {
+                const Icon = option.icon;
+                return (
+                  <div className="flex items-center" key={option.value}>
+                    <input
+                      id={option.value}
+                      name="status"
+                      type="radio"
+                      value={option.value}
+                      className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                      aria-describedby="status-error"
+                    />
+                    <label
+                      htmlFor={option.value}
+                      className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600"
+                    >
+                      {option.label} <Icon className="h-4 w-4" />
+                    </label>
+                  </div>
+                );
+              })}
             </div>
           </div>
-          <div id="status-error" aria-live="polite" aria-atomic="true">
-            {state.errors?.status?.map((error: string) => (
-              <p className="mt-2 text-sm text-red-500" key={error}>
-                {error}
-              </p>
-            ))}
-          </div>
+          <Errors id={'status-error'} errors={state.errors?.status} />
         </fieldset>
         <div id="form-error" aria-live="polite" aria-atomic="true">
-          {state.message && (
-            <p className="mt-2 text-sm text-red-500" key={state.message}>
-              {state.message}
-            </p>
-          )}
+          {state.message && <ErrorLine error={state.message} />}
         </div>
       </div>
       <div className="mt-6 flex justify-end gap-4">
