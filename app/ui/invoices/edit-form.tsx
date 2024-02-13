@@ -19,7 +19,7 @@ export default function EditInvoiceForm({
 }>) {
   const initialState = { message: null, errors: {}, id: invoice?.id };
   const [state, dispatch] = useFormState(updateInvoice, initialState);
-  console.log('edit-form', state);
+
   return (
     <form action={dispatch}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">

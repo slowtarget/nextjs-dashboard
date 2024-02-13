@@ -4,7 +4,7 @@ import { Errors } from '@/app/ui/invoices/errors';
 export function InvoiceAmount({
   defaultValue,
   errors,
-}: Readonly<{ defaultValue: number; errors?: string[] }>) {
+}: Readonly<{ defaultValue?: number; errors?: string[] }>) {
   return (
     <div className="mb-4">
       <label htmlFor="amount" className="mb-2 block text-sm font-medium">

@@ -20,8 +20,6 @@ export default function Search({
       params.delete('query');
     }
     replace(`${pathname}?${params.toString()}`);
-
-    console.log(term);
   }, 300);
   return (
     <div className="relative flex flex-1 flex-shrink-0">
