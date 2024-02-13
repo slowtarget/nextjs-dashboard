@@ -22,18 +22,14 @@ export default function Form({
   return (
     <form action={dispatch}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
-        {/* Customer Name */}
-
         <CustomerSelect
           value={''}
           customers={customers}
           errors={state.errors?.customerId}
         />
 
-        {/* Invoice Amount */}
         <InvoiceAmount errors={state.errors?.amount} />
 
-        {/* Invoice Status */}
         <StatusSelect errors={state.errors?.status} />
 
         <div id="form-error" aria-live="polite" aria-atomic="true">

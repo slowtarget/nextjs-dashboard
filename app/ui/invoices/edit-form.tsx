@@ -22,20 +22,17 @@ export default function EditInvoiceForm({
   return (
     <form action={dispatch}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
-        {/* Customer Name */}
         <CustomerSelect
           value={invoice?.customer_id}
           customers={customers}
           errors={state.errors?.customerId}
         />
 
-        {/* Invoice Amount */}
         <InvoiceAmount
           defaultValue={invoice.amount}
           errors={state.errors?.amount}
         />
 
-        {/* Invoice Status */}
         <StatusSelect value={invoice.status} errors={state.errors?.status} />
 
         <div id="form-error" aria-live="polite" aria-atomic="true">
