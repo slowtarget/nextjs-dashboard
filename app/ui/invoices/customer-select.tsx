@@ -6,7 +6,11 @@ export function CustomerSelect({
   value,
   customers,
   errors,
-}: Readonly<{ value: string; customers: CustomerField[]; errors?: string[] }>) {
+}: Readonly<{
+  value?: string;
+  customers: CustomerField[];
+  errors?: string[];
+}>) {
   return (
     <div className="mb-4">
       <label htmlFor="customer" className="mb-2 block text-sm font-medium">
@@ -17,7 +21,7 @@ export function CustomerSelect({
           id="customer"
           name="customerId"
           className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-          defaultValue={value}
+          defaultValue={value ?? ''}
           aria-describedby="customer-error"
         >
           <option value="" disabled>

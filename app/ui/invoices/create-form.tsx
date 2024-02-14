@@ -23,7 +23,6 @@ export default function Form({
     <form action={dispatch}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         <CustomerSelect
-          value={''}
           customers={customers}
           errors={state.errors?.customerId}
         />
